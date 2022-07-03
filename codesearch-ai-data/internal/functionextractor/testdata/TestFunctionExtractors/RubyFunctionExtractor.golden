@@ -1,0 +1,85 @@
+[]*functionextractor.ExtractedFunction{
+	{
+		Identifier: "X",
+		Code: `def X
+        "Y"
+      end`,
+		CleanCode: `def X
+  "Y"
+end`,
+		CleanCodeHash: "a5fe178a776eaae5123c889955e8e8605fa8f66e",
+		Docstring:     "Comment Comment",
+		StartLine:     13,
+		EndLine:       15,
+	},
+	{
+		Identifier: "c",
+		Code: `def c
+    "str"
+  end`,
+		CleanCode: `def c
+  "str"
+end`,
+		CleanCodeHash: "47c7879e7204dd1d1cb9c2269a38f143193e7a4a",
+		Docstring:     "Comment 2",
+		StartLine:     31,
+		EndLine:       33,
+	},
+	{
+		Identifier:    "d",
+		Code:          "def d\n    1\n  end",
+		CleanCode:     "def d\n  1\nend",
+		CleanCodeHash: "b3836c80dc5557ab211054e57258a4c0f82b3bb7",
+		StartLine:     37,
+		EndLine:       39,
+	},
+	{
+		Identifier:    "do_something",
+		Code:          "def do_something\n      3\n    end",
+		CleanCode:     "def do_something\n  3\nend",
+		CleanCodeHash: "ade76ac8cb97af17766350cc99f26af05ba229f6",
+		Docstring:     "Comment 1 Comment 2",
+		StartLine:     21,
+		EndLine:       23,
+	},
+	{
+		Identifier: "initialize",
+		Code: `def initialize()
+      1+1
+      # Comment
+      # Comment
+      def X
+        "Y"
+      end
+    end`,
+		CleanCode: `def initialize()
+  1+1
+  def X
+    "Y"
+  end
+end`,
+		CleanCodeHash:  "69483c269859faf61f60aef594f607846f8a44e2",
+		InlineComments: "Comment Comment",
+		Docstring:      "Comment",
+		StartLine:      9,
+		EndLine:        16,
+	},
+	{
+		Identifier:    "smth",
+		Code:          "def smth(a)\n      a + 1\n    end",
+		CleanCode:     "def smth(a)\n  a + 1\nend",
+		CleanCodeHash: "1a5d2399227e37bcdaf486ac6380a30a8543ce4f",
+		Docstring:     "Comment",
+		StartLine:     5,
+		EndLine:       7,
+	},
+	{
+		Identifier:    "top_level_fn",
+		Code:          "def top_level_fn(a, b)\n  a+b\nend",
+		CleanCode:     "def top_level_fn(a, b)\n  a+b\nend",
+		CleanCodeHash: "e1933dd9a82de188421eaba84859276e336bf238",
+		Docstring:     "Comment X Comment Y Comment Z",
+		StartLine:     45,
+		EndLine:       47,
+	},
+}

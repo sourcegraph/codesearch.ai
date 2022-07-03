@@ -1,0 +1,25 @@
+&codequerypairsimporter.CodeQueryPair{
+	Code: `$dateTime = new DateTime('2008-09-22');
+echo $dateTime->format('U');
+$date = new DateTime('2008-09-22');
+echo $date->getTimestamp();
+$date = date_create('2008-09-22');
+echo date_format($date, 'U');
+$date = date_create('2008-09-22');
+echo date_timestamp_get($date);
+$date = DateTime::createFromFormat('!d-m-Y', '22-09-2008');
+echo $dateTime->format('U');
+$date = date_parse_from_format('!d-m-Y', '22-09-2008');
+echo date_format($date, 'U');
+IntlDateFormatter
+$formatter = new IntlDateFormatter(
+ 'en_US',
+ IntlDateFormatter::FULL,
+ IntlDateFormatter::FULL,
+ 'GMT',
+ IntlDateFormatter::GREGORIAN,
+ 'dd-MM-yyyy'
+);
+echo $formatter->parse('22-09-2008');`, CodeHash: "54958c3cb8104227d69bee40415845dfda41d5f9",
+	Query: "Title 1",
+}

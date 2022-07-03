@@ -1,0 +1,26 @@
+`def a() -> None:
+    1+1
+@decorator
+def b(c, d) -> int:
+    if a:
+        b()
+    else:
+        print(3)
+    return c + 2
+class E:
+    def f() -> str:
+        def f_nested():
+            print(f"1 {x} 2")
+            return f
+        1
+        return "abc"
+    @setter1
+    @setter2
+    def g():
+        pass
+
+Above decorator
+Method
+Inner
+Print
+1`

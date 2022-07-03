@@ -1,0 +1,9 @@
+&codequerypairsimporter.CodeQueryPair{
+	Code: `def a():
+ return 1 + 1
+aReallyLongFunctionCall(1, 2)
+a = 1
+b = 2
+c = a - b`, CodeHash: "4880446caab92ddb9fd570fa0ef067a521db4d10",
+	Query: "Title 1",
+}

@@ -1,0 +1,83 @@
+[]*functionextractor.ExtractedFunction{
+	{
+		Identifier: "a",
+		Code: `def a() -> None:
+    "Comment 1"
+    1+1`,
+		CleanCode:     "def a() -> None:\n    1+1",
+		CleanCodeHash: "2f4e5bf7a836472869e231f0c217d34261efb471",
+		EndLine:       2,
+	},
+	{
+		Identifier: "b",
+		Code: `def b(c, d) -> int:
+    """
+    Comment 2
+    Comment 3
+    """
+    if a:
+        b()
+    else:
+        print(3)
+    return c + 2`,
+		CleanCode: `def b(c, d) -> int:
+    if a:
+        b()
+    else:
+        print(3)
+    return c + 2`,
+		CleanCodeHash: "b2b4d66a2b3536883cbbb8087a76a4dcbd7493c1",
+		StartLine:     6,
+		EndLine:       15,
+	},
+	{
+		Identifier: "f",
+		Code: `def f() -> str:
+        # Inner
+        def f_nested():
+            """
+            Comment 4
+            """
+            print(f"1 {x} 2") # Print
+            return f
+
+        1 # 1
+        return "abc"`,
+		CleanCode: `def f() -> str:
+    def f_nested():
+        print(f"1 {x} 2")
+        return f
+    1
+    return "abc"`,
+		CleanCodeHash:  "bcd9290aeaa4e7948ddf42f4558ed9a548c827c8",
+		InlineComments: "Inner Print 1",
+		StartLine:      19,
+		EndLine:        29,
+	},
+	{
+		Identifier: "f_nested",
+		Code: `def f_nested():
+            """
+            Comment 4
+            """
+            print(f"1 {x} 2") # Print
+            return f`,
+		CleanCode: `def f_nested():
+    print(f"1 {x} 2")
+    return f`,
+		CleanCodeHash:  "ee6e59d586deba8022ba8c1f0726bb7e141345bb",
+		InlineComments: "Print",
+		StartLine:      21,
+		EndLine:        26,
+	},
+	{
+		Identifier: "g",
+		Code: `def g():
+        "Comment 4"
+        pass`,
+		CleanCode:     "def g():\n    pass",
+		CleanCodeHash: "232f1f9c3e7bc2244757037285d0def137ceca54",
+		StartLine:     33,
+		EndLine:       35,
+	},
+}

@@ -1,0 +1,5 @@
+&codequerypairsimporter.CodeQueryPair{
+	Code:     "func f() {\n 1+1\n 1+1\n}",
+	CodeHash: "ed4a438e976499de49ca868f3d5efd276ddcbcd0",
+	Query:    "Title 1",
+}

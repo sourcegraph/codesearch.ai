@@ -1,0 +1,43 @@
+`module A
+  class B
+    def smth(a)
+      a + 1
+    end
+    def initialize()
+      1+1
+      def X
+        "Y"
+      end
+    end
+  private
+    def do_something
+      3
+    end
+  end
+end
+class C
+  1+1
+  def c
+    "str"
+  end
+  def d
+    1
+  end
+end
+def top_level_fn(a, b)
+  a+b
+end
+
+Top-level comment
+Comment
+Comment
+Comment
+Comment
+Comment 1
+Comment 2
+Comment 1
+Comment 2
+123
+Comment X
+Comment Y
+Comment Z`

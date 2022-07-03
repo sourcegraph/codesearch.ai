@@ -1,0 +1,28 @@
+`package abc
+func a() int {
+ return 1 + 1
+}
+func b() {
+ c := func() string {
+  return "a"
+ }
+}
+func (d D) E() int {
+ 3
+}
+func (f F) G() int {
+ 4
+}
+
+Comment 1
+Comment 2
+Comment 3
+Comment 4
+Comment 5
+Comment 6
+Comment 7
+Comment 8
+Comment 9
+Comment 10
+A B C
+This is four`

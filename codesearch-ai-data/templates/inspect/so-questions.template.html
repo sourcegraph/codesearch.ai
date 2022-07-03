@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>codesearch.ai Inspector</title>
+    <style>
+        .question {
+            border: 1px solid sandybrown;
+            margin-bottom: 16px;
+            padding: 16px;
+        }
+
+        .title {
+            margin-bottom: 8px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .tags {
+            margin-bottom: 8px;
+        }
+
+        .answer {
+            background-color: beige;
+        }
+
+        .answer pre {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="/inspect/so-questions?after={{ .After }}&pageSize={{ .PageSize }}">Next</a>
+    {{ range .StoredQuestions }}
+    <div class="question">
+        <div class="title">{{ .Title }}</div>
+        <div class="tags">{{ .Tags }}</div>
+        {{ range .Answers }}
+        <div class="answer">{{ . }}</div>
+        {{ end }}
+    </div>
+    {{ end }}
+</body>
+
+</html>

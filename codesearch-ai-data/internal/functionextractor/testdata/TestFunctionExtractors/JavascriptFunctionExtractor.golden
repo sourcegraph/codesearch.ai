@@ -1,0 +1,126 @@
+[]*functionextractor.ExtractedFunction{
+	{
+		Code: `function (t) {
+            return t.t
+        }`,
+		CleanCode:     "function (t) {\n    return t.t\n}",
+		CleanCodeHash: "35fddeabdb46cadaf8a28d97fd8b10ed3de6b60a",
+		StartLine:     56,
+		EndLine:       58,
+	},
+	{
+		Identifier:    "a",
+		Code:          "() => 1 + 1",
+		CleanCode:     "() => 1 + 1",
+		CleanCodeHash: "3bf46e3d738b05a623aeb73841c1ca01d46ea8fa",
+		StartLine:     9,
+		EndLine:       9,
+	},
+	{
+		Identifier:    "b",
+		Code:          "function (params) {\n    console.log()\n}",
+		CleanCode:     "function (params) {\n    console.log()\n}",
+		CleanCodeHash: "d72629a3753ae12e7b6670d18f157568dc717f69",
+		StartLine:     12,
+		EndLine:       14,
+	},
+	{
+		Identifier:    "c",
+		Code:          "function x() {}",
+		CleanCode:     "function x() {}",
+		CleanCodeHash: "68a1be40fde2e190f9632becc68d37a2836882aa",
+		StartLine:     17,
+		EndLine:       17,
+	},
+	{
+		Identifier: "f",
+		Code: `function f() {
+    /*
+        function f
+    */
+    return 1; // return
+}`,
+		CleanCode:      "function f() {\n    return 1;\n}",
+		CleanCodeHash:  "86938b19139f123b87152a73c13e5d7d61e2d157",
+		InlineComments: "function f return",
+		Docstring:      "Top-level function",
+		StartLine:      1,
+		EndLine:        6,
+	},
+	{
+		Identifier:    "field",
+		Code:          "get field() {\n        return 1\n    }",
+		CleanCode:     "get field() {\n    return 1\n}",
+		CleanCodeHash: "fd26c096f0e1bff860ea4dacbf3a1a218c5e963c",
+		Docstring:     "Getter",
+		StartLine:     40,
+		EndLine:       42,
+	},
+	{
+		Identifier: "field",
+		Code: `set field(f) {
+        f = f
+
+        const x = () => {
+            console.log("nested")
+        }
+    }`,
+		CleanCode: `set field(f) {
+    f = f
+    const x = () => {
+        console.log("nested")
+    }
+}`,
+		CleanCodeHash: "0b215bea3e2770cc033ddd5612b4480389d8de0b",
+		Docstring:     "Setter",
+		StartLine:     45,
+		EndLine:       51,
+	},
+	{
+		Identifier:    "g",
+		Code:          "() => {\n        return 1;\n    }",
+		CleanCode:     "() => {\n    return 1;\n}",
+		CleanCodeHash: "ee6e6333dab2e2bc4cee563c8e9197ef0475e53a",
+		StartLine:     25,
+		EndLine:       27,
+	},
+	{
+		Identifier:    "h",
+		Code:          "function () {\n        return 2;\n    }",
+		CleanCode:     "function () {\n    return 2;\n}",
+		CleanCodeHash: "b022d492e4b611b6ec1d70984e524b5fbdd88c5d",
+		StartLine:     33,
+		EndLine:       35,
+	},
+	{
+		Identifier: "method",
+		Code: `method() {
+        const things = arr.map(function (t) {
+            return t.t
+        })
+        return "method"
+    }`,
+		CleanCode: `method() {
+    const things = arr.map(function (t) {
+        return t.t
+    })
+    return "method"
+}`,
+		CleanCodeHash: "7593c7e07e17e75de320e7999e6cec257c810939",
+		Docstring:     "Class method",
+		StartLine:     55,
+		EndLine:       60,
+	},
+	{
+		Identifier: "x",
+		Code: `() => {
+            console.log("nested")
+        }`,
+		CleanCode: `() => {
+    console.log("nested")
+}`,
+		CleanCodeHash: "2d2521c9fe200e124377bb41ad253e6a5d66ed9b",
+		StartLine:     48,
+		EndLine:       50,
+	},
+}

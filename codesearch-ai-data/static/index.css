@@ -1,0 +1,43 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100vw;
+    height: 50vh;
+}
+
+.logo {
+    margin-bottom: 32px;
+    font-family: 'Archivo', sans-serif;
+}
+
+.query-wrapper {
+    max-width: 90%;
+}
+
+.try {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+    max-width: 720px;
+}
+
+a {
+    padding: 4px;
+    background-color: rgb(67, 103, 220);
+    color: #fff !important;
+    border-radius: 4px;
+}

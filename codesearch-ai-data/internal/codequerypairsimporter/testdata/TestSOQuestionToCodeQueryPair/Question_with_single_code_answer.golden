@@ -1,0 +1,5 @@
+&codequerypairsimporter.CodeQueryPair{
+	Code:     "def a():\n return 1 + 1",
+	CodeHash: "9aae49f218c37707425288f46236023463f97779",
+	Query:    "Title 1",
+}

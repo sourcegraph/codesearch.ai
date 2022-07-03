@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>codesearch.ai Inspector</title>
+    <style>
+        .function {
+            border: 1px solid sandybrown;
+            margin-bottom: 16px;
+            padding: 16px;
+        }
+
+        .clean-code {
+            background-color: beige;
+        }
+
+        .path {
+            margin-bottom: 8px;
+        }
+
+        .identifier {
+            margin-bottom: 8px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .docstring {
+            margin-bottom: 8px;
+        }
+
+        .inline-comments {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="/inspect/extracted-functions?after={{ .After }}&pageSize={{ .PageSize }}">Next</a>
+    {{ range .StoredFunctions }}
+    <div class="function">
+        <div class="identifier">{{ .Identifier }}</div>
+        <div class="path">{{ .Path }}</div>
+        <div class="docstring">Docstring: {{ .Docstring }}</div>
+        <div class="inline-comments">InlineComments: {{ .InlineComments }}</div>
+        <pre class="clean-code"><code>{{ .CleanCode }}</code></pre>
+    </div>
+    {{ end }}
+</body>
+
+</html>

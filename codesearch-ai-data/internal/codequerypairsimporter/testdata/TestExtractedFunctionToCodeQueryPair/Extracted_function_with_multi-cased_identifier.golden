@@ -1,0 +1,5 @@
+&codequerypairsimporter.CodeQueryPair{
+	Code:     "() => 1",
+	CodeHash: "10a1a4cf7c19937a80a75ab8c9f1419dbddcbc8e",
+	Query:    "Class A Function HTML call",
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>codesearch.ai Inspector</title>
+    <style>
+        .pair {
+            border: 1px solid sandybrown;
+            margin-bottom: 16px;
+            padding: 16px;
+        }
+
+        .code {
+            background-color: beige;
+        }
+
+        .query {
+            margin-bottom: 8px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="/inspect/code-query-pairs?after={{ .After }}&pageSize={{ .PageSize }}">Next</a>
+    {{ range .CodeQueryPairs }}
+    <div class="pair">
+        <div class="query">{{ .Query }}</div>
+        <pre class="code"><code>{{ .Code }}</code></pre>
+    </div>
+    {{ end }}
+</body>
+
+</html>

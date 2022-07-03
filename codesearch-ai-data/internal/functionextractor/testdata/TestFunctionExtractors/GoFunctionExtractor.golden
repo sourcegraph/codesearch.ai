@@ -1,0 +1,53 @@
+[]*functionextractor.ExtractedFunction{
+	{
+		Identifier:    "E",
+		Code:          "func (d D) E() int {\n\t3\n}",
+		CleanCode:     "func (d D) E() int {\n 3\n}",
+		CleanCodeHash: "13d7a6b6e09770a419f39ddb8b2dbecc567707bb",
+		Docstring:     "Comment 8 Comment 9 Comment 10",
+		StartLine:     26,
+		EndLine:       28,
+	},
+	{
+		Identifier: "G",
+		Code: `func (f F) G() int {
+4 // This is four
+}`,
+		CleanCode:      "func (f F) G() int {\n 4\n}",
+		CleanCodeHash:  "a0e57b762e29e0a4c010d9357efa2ecba6a27e51",
+		InlineComments: "This is four",
+		Docstring:      "A B C",
+		StartLine:      35,
+		EndLine:        37,
+	},
+	{
+		Identifier:    "a",
+		Code:          "func a() int {\n\treturn 1 + 1\n}",
+		CleanCode:     "func a() int {\n return 1 + 1\n}",
+		CleanCodeHash: "2dccbd58d9ee1f944a67617086a6d6fa06b7fb6c",
+		Docstring:     "Comment 1 Comment 2",
+		StartLine:     6,
+		EndLine:       8,
+	},
+	{
+		Identifier: "b",
+		Code: `func b() {
+// Comment 6
+
+// Comment 7
+c := func() string {
+	return "a"
+}
+}`,
+		CleanCode: `func b() {
+ c := func() string {
+  return "a"
+ }
+}`,
+		CleanCodeHash:  "566b6da7ad6913ba45a1191c766d41d079095ab7",
+		InlineComments: "Comment 6 Comment 7",
+		Docstring:      "Comment 4 Comment 5",
+		StartLine:      14,
+		EndLine:        21,
+	},
+}

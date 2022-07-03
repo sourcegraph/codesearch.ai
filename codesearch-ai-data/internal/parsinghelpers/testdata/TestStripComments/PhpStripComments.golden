@@ -1,0 +1,20 @@
+`<?php
+function a($b, $c): string {
+    return $b + $c + "d";
+}
+class C {
+    function f() {}
+    private function g() {
+        $a = 1 + 1;
+        return $a;
+    }
+    function __destruct() {}
+}
+
+Docstring
+Concat
+Class comment
+Method
+comment
+Sum up
+Desctructor`

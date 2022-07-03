@@ -1,0 +1,29 @@
+`class J {
+    public J() {
+        this.x = y;
+    }
+    int x = 0;
+    public static void a() {}
+    @Overrides
+    public int b() {
+        return 1;
+    }
+    public boolean equals() {
+        return false;
+    }
+    @OverridesA
+    @OverridesB
+    public int b() {
+        return 1;
+    }
+}
+
+Class
+Constructor J
+Random
+A
+B
+C
+Returns 1
+Return 1
+Also returns one`

@@ -1,0 +1,41 @@
+[]*functionextractor.ExtractedFunction{
+	{
+		Identifier: "a",
+		Code: `function a($b, $c): string {
+    // Concat
+    return $b + $c + "d";
+}`,
+		CleanCode: `function a($b, $c): string {
+    return $b + $c + "d";
+}`,
+		CleanCodeHash:  "03af4d8e9965f422b6c15d5d2b7f81c4762d147d",
+		InlineComments: "Concat",
+		Docstring:      "Docstring",
+		StartLine:      5,
+		EndLine:        8,
+	},
+	{
+		Identifier:    "f",
+		Code:          "function f() {}",
+		CleanCode:     "function f() {}",
+		CleanCodeHash: "9f34ad19a3db2f36fc317fa4c3a939aca064de98",
+		Docstring:     "Method comment",
+		StartLine:     15,
+		EndLine:       15,
+	},
+	{
+		Identifier: "g",
+		Code: `private function g() {
+        $a = 1 + 1; // Sum up
+        return $a;
+    }`,
+		CleanCode: `private function g() {
+    $a = 1 + 1;
+    return $a;
+}`,
+		CleanCodeHash:  "d2c86f6a8b8c7f47b0c978bc64e267f50a97f98e",
+		InlineComments: "Sum up",
+		StartLine:      17,
+		EndLine:        20,
+	},
+}

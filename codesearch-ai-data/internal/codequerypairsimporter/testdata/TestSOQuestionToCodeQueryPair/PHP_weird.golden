@@ -1,0 +1,21 @@
+&codequerypairsimporter.CodeQueryPair{
+	Code: `class DataHandler {
+ protected $directory;
+ public function __construct($directory = null) {
+  if ($directory === null)
+   $directory = get_data_dir();
+  if (substr($directory, -1) != '/')
+   $directory .= '/';
+  $this->directory = (string) $directory;
+ }
+ public function save($filename, $content) {
+  $file = $this->directory . $filename;
+  if(!$this->put($file, $content)) {
+   trigger_error(get_class($this) . " error: Couldn't write to $file", E_USER_WARNING);
+   return false;
+  }
+  return true;
+ }
+}`, CodeHash: "50c0f7ef63033fb300a40d8175a34ddc9a1d1350",
+	Query: "Title 1",
+}

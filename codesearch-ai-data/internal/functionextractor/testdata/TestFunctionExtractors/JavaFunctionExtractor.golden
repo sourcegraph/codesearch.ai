@@ -1,0 +1,46 @@
+[]*functionextractor.ExtractedFunction{
+	{
+		Identifier:    "a",
+		Code:          "public static void a() {}",
+		CleanCode:     "public static void a() {}",
+		CleanCodeHash: "59ca90148a4f77820cd874af0e8706594ce37351",
+		Docstring:     "A",
+		StartLine:     14,
+		EndLine:       14,
+	},
+	{
+		Identifier: "b",
+		Code: `@Overrides
+    public int b() {
+        // Returns 1
+        return 1;
+    }`,
+		CleanCode: `@Overrides
+public int b() {
+    return 1;
+}`,
+		CleanCodeHash:  "94db9b2f4187423de7db50b3707558f8b57b25f8",
+		InlineComments: "Returns 1",
+		Docstring:      "B C",
+		StartLine:      18,
+		EndLine:        22,
+	},
+	{
+		Identifier: "b",
+		Code: `@OverridesA
+    @OverridesB
+    public int b() {
+        return 1; // Also returns one
+    }`,
+		CleanCode: `@OverridesA
+@OverridesB
+public int b() {
+    return 1;
+}`,
+		CleanCodeHash:  "79a2f5ca7b77cfc6f69f9473c0ec2440214aa3eb",
+		InlineComments: "Also returns one",
+		Docstring:      "Return 1",
+		StartLine:      32,
+		EndLine:        36,
+	},
+}
