@@ -1,0 +1,73 @@
+.app {
+  width: 100vw;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.tab-buttons {
+  margin-bottom: 16px;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  padding-bottom: 4px;
+  cursor: pointer;
+}
+
+.tab-button--active {
+  border-bottom: 2px solid black;
+}
+
+.input {
+  min-height: 300px;
+}
+
+.text-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 500px;
+}
+
+.text-input__input {
+  width: 300px;
+  font-size: 16px;
+  border: none;
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  border: 1px solid black;
+}
+
+.search-button {
+  background: none;
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 8px;
+  width: fit-content;
+  cursor: pointer
+}
+
+.code-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 500px;
+}
+
+.code-input__textarea {
+  width: 400px;
+  height: 200px;
+  margin-bottom: 16px;
+}
+
+.code-input__select-language {
+  padding: 8px;
+  margin-bottom: 16px;
+  width: 100%;
+}
