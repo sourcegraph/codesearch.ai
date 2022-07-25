@@ -13,4 +13,4 @@ The project is split into two sub-projects: data collection and model training. 
 
 ## Code walkthrough
 
-We prepared a detailed code walkthrough in the form of a [Sourcegraph Notebook](#).
+We prepared a detailed code walkthrough in the form of a [Sourcegraph Notebook](https://sourcegraph.com/notebooks/Tm90ZWJvb2s6MTM0Mw==).
