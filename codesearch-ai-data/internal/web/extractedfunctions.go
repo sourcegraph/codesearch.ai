@@ -10,14 +10,14 @@ import (
 )
 
 type HighlightedExtractedFunction struct {
-	ID              int
-	RepositoryName  string
-	CommitID        string
-	FilePath        string
-	StartLine       int
-	EndLine         int
-	HighlightedHTML template.HTML
-	URL             string
+	ID              int           `json:"id"`
+	RepositoryName  string        `json:"repositoryName"`
+	CommitID        string        `json:"commitID"`
+	FilePath        string        `json:"filePath"`
+	StartLine       int           `json:"startLine"`
+	EndLine         int           `json:"endLine"`
+	HighlightedHTML template.HTML `json:"highlightedHTML"`
+	URL             string        `json:"url"`
 }
 
 const extractedFunctionsWithRepoQuery = `SELECT extracted_functions.id, r.name, r.commit_id, extracted_functions.path, extracted_functions.start_line, extracted_functions.end_line
