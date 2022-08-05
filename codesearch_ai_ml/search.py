@@ -15,10 +15,8 @@ def find_similar_vector_ids(faiss_index, query_vectors, n_results=5):
     return faiss_index.search(query_vectors, n_results)
 
 
-def search_code_documents(
-    query, encoder_model, faiss_index, query_tokenizer, n_results=20
-):
-    encoded_query = encode_code_samples(encoder_model, query_tokenizer, [query], device)
+def search_code_documents(query, encoder_model, faiss_index, tokenizer, n_results=20):
+    encoded_query = encode_code_samples(encoder_model, tokenizer, [query], device)
     _, indices = find_similar_vector_ids(
         faiss_index, encoded_query, n_results=n_results
     )
