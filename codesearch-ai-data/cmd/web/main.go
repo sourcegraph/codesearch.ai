@@ -13,6 +13,7 @@ func main() {
 
 	r := mux.NewRouter()
 	if isDevelopment {
+		// Mock API routes
 		r.HandleFunc("/api/search/functions/by-text", mockSearchHandler("functions")).Methods("GET", "OPTIONS")
 		r.HandleFunc("/api/search/functions/by-code", mockSearchHandler("functions")).Methods("GET", "OPTIONS")
 
@@ -22,6 +23,7 @@ func main() {
 		// Static files
 		r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./client/build/static"))))
 
+		// API routes
 		r.HandleFunc("/api/search/functions/by-text", searchFunctionsByTextHandler).Methods("GET", "OPTIONS")
 		r.HandleFunc("/api/search/functions/by-code", searchFunctionsByCodeHandler).Methods("GET", "OPTIONS")
 
