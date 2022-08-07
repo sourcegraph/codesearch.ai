@@ -1,0 +1,30 @@
+.code-snippet {
+    background-color: #FFFFFF;
+    width: 100%;
+    min-width: 0;
+    background: #FFFFFF;
+    border: 1px solid #E4E7EE;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.code-snippet-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #E4E7EE;
+    font-size: 18px;
+}
+
+.code-snippet-header>img {
+    margin-right: 8px;
+}
+
+.code-snippet-header>a {
+    text-decoration: none;
+    color: #000000;
+}
+
+.code-snippet-highlighted-code {
+    padding: 0 16px;
+}

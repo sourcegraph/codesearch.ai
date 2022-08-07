@@ -1,0 +1,30 @@
+.home-container {
+    display: flex;
+    justify-content: center;
+}
+
+.home {
+    padding: 0 16px;
+    min-width: 300px;
+    max-width: 900px;
+}
+
+.home-logo {
+    margin-top: 64px;
+    cursor: default;
+}
+
+.home-text-search-input {
+    margin-top: 32px;
+}
+
+.home-container .text-search-input {
+    width: 100%;
+}
+
+.text-search-examples {
+    margin-top: 48px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
