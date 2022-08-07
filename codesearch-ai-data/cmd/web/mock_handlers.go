@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -37,6 +38,8 @@ func mockSearchHandler(dataSource string) func(http.ResponseWriter, *http.Reques
 				return
 			}
 		}
+
+		time.Sleep(2 * time.Second)
 
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")

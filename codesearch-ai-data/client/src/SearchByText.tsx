@@ -11,6 +11,7 @@ import { useSearchResults } from "./useSearchResults";
 import { useLocation, useNavigate } from "react-router-dom";
 import { HighlightedFunction, SOQuestion } from "./types";
 import { SOQuestionComponent } from "./SOQuestionComponent";
+import { LoaderBlock } from "./LoaderBlock";
 
 export const isErrorLike = (value: unknown): value is Error =>
   typeof value === "object" &&
@@ -42,6 +43,14 @@ export const SearchByText: React.FunctionComponent = () => {
 
   const soSearchResults = useSearchResults<SOQuestion>("so", "text", query);
 
+  const loadingBlocks = (
+    <>
+      <LoaderBlock />
+      <LoaderBlock />
+      <LoaderBlock />
+    </>
+  );
+
   return (
     <SimpleBar style={{ height: "100vh" }}>
       <div className="search-by-text">
@@ -53,6 +62,7 @@ export const SearchByText: React.FunctionComponent = () => {
         </div>
         <div className="search-by-text-results">
           <div className="search-by-text-results-column">
+            {functionsSearchResults === "loading" && loadingBlocks}
             {functionsSearchResults &&
               functionsSearchResults !== "loading" &&
               !isErrorLike(functionsSearchResults) &&
@@ -61,6 +71,7 @@ export const SearchByText: React.FunctionComponent = () => {
               ))}
           </div>
           <div className="search-by-text-results-column">
+            {soSearchResults === "loading" && loadingBlocks}
             {soSearchResults &&
               soSearchResults !== "loading" &&
               !isErrorLike(soSearchResults) &&
