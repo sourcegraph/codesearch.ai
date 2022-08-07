@@ -30,7 +30,7 @@ func mockSearchHandler(dataSource string) func(http.ResponseWriter, *http.Reques
 			highlightCodeLineRanges(hefs)
 			results = hefs
 		} else if dataSource == "so" {
-			ids := []int{59628, 91367, 143233}
+			ids := []int{1006395, 1243079, 1163074}
 			results, err = web.GetSOQuestionsWithAnswersByID(ctx, conn, ids)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -38,6 +38,7 @@ func mockSearchHandler(dataSource string) func(http.ResponseWriter, *http.Reques
 			}
 		}
 
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(results)

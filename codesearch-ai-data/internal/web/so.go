@@ -26,7 +26,7 @@ type SOAnswer struct {
 	ID           int    `json:"id"`
 	Body         string `json:"body"`
 	Score        int    `json:"score"`
-	CreationDate string `json:"creationDate"`
+	CreationDate string `json:"creation_date"`
 }
 
 const soQuestionsWithAnswersQuery = `SELECT so_questions.id, so_questions.title, so_questions.tags, so_questions.score, so_questions.creation_date, json_agg(sa order by sa.score desc)
@@ -61,6 +61,7 @@ func GetSOQuestionsWithAnswersByID(ctx context.Context, conn *pgx.Conn, ids []in
 			sq.CreationDate = timestamp.Format("Jan 02, 2006")
 		}
 
+		answers := sq.Answers[:0]
 		for _, answer := range sq.Answers {
 			if answer == nil {
 				continue
@@ -71,8 +72,9 @@ func GetSOQuestionsWithAnswersByID(ctx context.Context, conn *pgx.Conn, ids []in
 				answer.CreationDate = timestamp.Format("Jan 02, 2006")
 			}
 			answer.Body = socode.EscapeCodeSnippetsInHTML(answer.Body)
+			answers = append(answers, answer)
 		}
-
+		sq.Answers = answers
 		return sq, nil
 	})
 	if err != nil {
