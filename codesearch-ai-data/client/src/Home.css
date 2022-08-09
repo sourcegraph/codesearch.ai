@@ -12,14 +12,35 @@
 .home-logo {
     margin-top: 64px;
     cursor: default;
+    margin-bottom: 32px;
 }
 
-.home-text-search-input {
-    margin-top: 32px;
+.home-search-by {
+    display: flex;
+    margin-bottom: 16px;
+}
+
+.home-search-by-option {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #62738D;
+    padding: 4px 8px;
+    font-size: 14px;
+    margin-right: 8px;
+    border-bottom: 2px solid transparent;
+}
+
+.home-search-by-option-selected {
+    border-bottom: 2px solid rgba(85, 23, 209, 0.4);
 }
 
 .home-container .text-search-input {
     width: 100%;
+}
+
+.home-code-search-input {
+    display: flex;
 }
 
 .text-search-examples {

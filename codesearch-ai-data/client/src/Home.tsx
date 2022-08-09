@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { CodeSearchInput } from "./CodeSearchInput";
 import "./Home.css";
 import { Logo } from "./Logo";
 import { QueryExampleChip } from "./QueryExampleChip";
@@ -17,11 +18,13 @@ const textSearchExamples = [
 export const Home: React.FunctionComponent<{}> = () => {
   const navigate = useNavigate();
 
+  const [searchBy, setSearchBy] = useState<"text" | "code">("text");
+
   const onSearch = useCallback(
     (query: string) => {
-      navigate(`/search/by-text?query=${encodeURIComponent(query)}`);
+      navigate(`/search/by-${searchBy}?query=${encodeURIComponent(query)}`);
     },
-    [navigate]
+    [searchBy, navigate]
   );
 
   return (
@@ -30,18 +33,49 @@ export const Home: React.FunctionComponent<{}> = () => {
         <div className="home-logo">
           <Logo />
         </div>
-        <div className="home-text-search-input">
-          <TextSearchInput onSearch={onSearch} />
+        <div className="home-search-by">
+          <button
+            className={`home-search-by-option ${
+              searchBy === "text" && "home-search-by-option-selected"
+            }`}
+            type="button"
+            onClick={() => setSearchBy("text")}
+          >
+            Search by text
+          </button>
+          <button
+            className={`home-search-by-option ${
+              searchBy === "code" && "home-search-by-option-selected"
+            }`}
+            type="button"
+            onClick={() => setSearchBy("code")}
+          >
+            Search by code
+          </button>
         </div>
-        <div className="text-search-examples">
-          {textSearchExamples.map((example) => (
-            <QueryExampleChip
-              key={example}
-              url={`/search/by-text?query=${encodeURIComponent(example)}`}
-              text={example}
-            />
-          ))}
-        </div>
+        {searchBy === "text" && (
+          <>
+            <div className="home-text-search-input">
+              <TextSearchInput onSearch={onSearch} />
+            </div>
+            <div className="text-search-examples">
+              {textSearchExamples.map((example) => (
+                <QueryExampleChip
+                  key={example}
+                  url={`/search/by-text?query=${encodeURIComponent(example)}`}
+                  text={example}
+                />
+              ))}
+            </div>
+          </>
+        )}
+        {searchBy === "code" && (
+          <>
+            <div className="home-code-search-input">
+              <CodeSearchInput onSearch={onSearch} />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -8,7 +8,8 @@ body {
   background: linear-gradient(180deg, #F7F8FB 0%, #F9F7FC 100%);
 }
 
-code {
+code,
+textarea {
   font-family: 'Azeret Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
   font-size: 14px;
