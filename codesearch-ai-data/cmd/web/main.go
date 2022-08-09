@@ -30,6 +30,8 @@ func main() {
 		r.HandleFunc("/api/search/so/by-text", searchSOByTextHandler).Methods("GET", "OPTIONS")
 		r.HandleFunc("/api/search/so/by-code", searchSOByCodeHandler).Methods("GET", "OPTIONS")
 
+		r.Path("/favicon.png").HandlerFunc(func(w http.ResponseWriter, r *http.Request) { http.ServeFile(w, r, "client/build/favicon.png") }).Methods("GET")
+
 		// Index
 		r.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) { http.ServeFile(w, r, "client/build/index.html") }).Methods("GET")
 	}
