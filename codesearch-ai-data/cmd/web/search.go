@@ -22,7 +22,7 @@ type SearchResults struct {
 }
 
 var searchCacheMutex sync.Mutex
-var searchCache map[string]*SearchResults
+var searchCache = map[string]*SearchResults{}
 
 func search(source string, by string, query string, count int) (*SearchResults, error) {
 	cacheKey := fmt.Sprintf("%s:%s:%s:%d", source, by, query, count)
