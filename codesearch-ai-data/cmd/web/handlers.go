@@ -34,11 +34,9 @@ func findLanguage(query string) string {
 
 func languageToFileExtension(language string) string {
 	switch language {
-	case "python":
-	case "py":
+	case "python", "py":
 		return "py"
-	case "javascript":
-	case "js":
+	case "javascript", "js":
 		return "js"
 	case "ruby":
 		return "rb"
@@ -46,8 +44,25 @@ func languageToFileExtension(language string) string {
 		return "java"
 	case "php":
 		return "php"
-	case "go":
-	case "golang":
+	case "go", "golang":
+		return "go"
+	}
+	return ""
+}
+
+func languageToSOTag(language string) string {
+	switch language {
+	case "python", "py":
+		return "python"
+	case "javascript", "js":
+		return "javascript"
+	case "ruby":
+		return "ruby"
+	case "java":
+		return "java"
+	case "php":
+		return "php"
+	case "go", "golang":
 		return "go"
 	}
 	return ""
@@ -62,7 +77,7 @@ func searchFunctionsByTextHandler(w http.ResponseWriter, r *http.Request) {
 	defer conn.Close(ctx)
 
 	query := sliceQuery(r.URL.Query().Get("query"))
-	searchResults, err := search("functions", "text", query, 512)
+	searchResults, err := search("functions", "text", query, MAX_RESULTS*3)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -128,7 +143,7 @@ func searchSOByTextHandler(w http.ResponseWriter, r *http.Request) {
 	defer conn.Close(ctx)
 
 	query := sliceQuery(r.URL.Query().Get("query"))
-	searchResults, err := search("so", "text", query, 512)
+	searchResults, err := search("so", "text", query, MAX_RESULTS*3)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -141,9 +156,10 @@ func searchSOByTextHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	language := findLanguage(query)
+	languageTag := languageToSOTag(language)
 	filteredResults := make([]*web.SOQuestionWithAnswers, 0, MAX_RESULTS)
 	for _, result := range results {
-		if strings.Contains(strings.ToLower(result.Tags), language) {
+		if languageTag == "" || strings.Contains(strings.ToLower(result.Tags), languageTag) {
 			filteredResults = append(filteredResults, result)
 		}
 		if len(filteredResults) == MAX_RESULTS {
