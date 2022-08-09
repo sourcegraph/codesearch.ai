@@ -16,6 +16,18 @@ const textSearchExamples = [
   "how to read a .gz compressed file?",
 ];
 
+const codeSearchExamples = [
+  "$pdo = new PDO('mysql:dbname=mydb', 'myuser', 'mypass');",
+  `n = len(arr)
+for i in range(n):
+    for j in range(0, n-i-1):
+        if arr[j] > arr[j+1]:
+            arr[j], arr[j+1] = arr[j+1], arr[j]`,
+  "inputStream = new GZIPInputStream(new FileInputStream(in.getPath()));",
+  'plt.scatter(x, y, c="blue")',
+  "kmeans = KMeans()",
+];
+
 export const HomePage: React.FunctionComponent<{}> = () => {
   const navigate = useNavigate();
 
@@ -74,6 +86,15 @@ export const HomePage: React.FunctionComponent<{}> = () => {
           <>
             <div className="home-code-search-input">
               <CodeSearchInput onSearch={onSearch} />
+            </div>
+            <div className="code-search-examples">
+              {codeSearchExamples.map((example) => (
+                <QueryExampleChip
+                  key={example}
+                  url={`/search/by-code?query=${encodeURIComponent(example)}`}
+                  text={example}
+                />
+              ))}
             </div>
           </>
         )}

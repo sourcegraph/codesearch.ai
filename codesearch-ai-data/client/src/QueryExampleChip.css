@@ -1,10 +1,8 @@
 .query-example-chip {
-    display: inline-block;
     background: #FFFFFF;
     text-decoration: none;
     border: 1px solid rgba(85, 23, 209, 0.6);
     box-shadow: 0px 1px 0px rgba(115, 62, 227, 0.15);
-    border-radius: 9999px;
     padding: 6px 12px;
     color: #62738D;
 }

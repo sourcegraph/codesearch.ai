@@ -3,6 +3,7 @@
 }
 
 .code-search-input {
+    min-height: 64px;
     box-sizing: border-box;
     outline: none;
     padding: 8px;

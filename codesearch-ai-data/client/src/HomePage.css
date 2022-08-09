@@ -60,3 +60,22 @@
     gap: 8px;
     flex-wrap: wrap;
 }
+
+.text-search-examples .query-example-chip {
+    display: inline-block;
+    border-radius: 9999px;
+}
+
+.code-search-examples {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 48px;
+}
+
+.code-search-examples .query-example-chip {
+    white-space: pre-wrap;
+    border-radius: 8px;
+    font-family: 'Azeret Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+}
