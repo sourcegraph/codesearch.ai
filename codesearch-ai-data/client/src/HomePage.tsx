@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { CodeSearchInput } from "./CodeSearchInput";
-import "./Home.css";
 import { Logo } from "./Logo";
 import { QueryExampleChip } from "./QueryExampleChip";
 import { TextSearchInput } from "./TextSearchInput";
+
+import "./HomePage.css";
 
 const textSearchExamples = [
   "how to determine a string is a valid word",
@@ -15,7 +16,7 @@ const textSearchExamples = [
   "how to read a .gz compressed file?",
 ];
 
-export const Home: React.FunctionComponent<{}> = () => {
+export const HomePage: React.FunctionComponent<{}> = () => {
   const navigate = useNavigate();
 
   const [searchBy, setSearchBy] = useState<"text" | "code">("text");

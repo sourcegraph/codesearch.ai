@@ -43,6 +43,17 @@
     display: flex;
 }
 
+.home-code-search-input .code-search-input-root {
+    width: 900px;
+    min-width: 300px;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.home-code-search-input .code-search-input {
+    min-height: 128px;
+}
+
 .text-search-examples {
     margin-top: 48px;
     display: flex;

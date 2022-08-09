@@ -33,6 +33,7 @@ export const TextSearchInput: React.FunctionComponent<TextSearchInputProps> = ({
             onSearch(value);
           }
         }}
+        required
       />
     </div>
   );

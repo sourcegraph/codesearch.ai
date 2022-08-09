@@ -19,6 +19,7 @@ export const CodeSearchInput: React.FunctionComponent<CodeSearchInputProps> = ({
         className="code-search-input"
         value={value}
         onChange={(e) => setValue(e.target.value)}
+        required
       />
       <div>
         <button
