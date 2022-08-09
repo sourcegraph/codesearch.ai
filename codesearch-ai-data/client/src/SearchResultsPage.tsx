@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import SimpleBar from "simplebar-react";
 import { Logo } from "./Logo";
 import { TextSearchInput } from "./TextSearchInput";
@@ -25,6 +25,11 @@ export const SearchResultsPage: React.FunctionComponent<{
     const searchParams = new URLSearchParams(location.search);
     return searchParams.get("query") ?? "";
   }, [location.search]);
+
+  useEffect(() => {
+    const querySummary = query.length > 64 ? `${query.slice(0, 64)}...` : query;
+    document.title = `codesearch.ai | ${querySummary}`;
+  }, [query]);
 
   return (
     <SimpleBar style={{ height: "100vh" }}>
