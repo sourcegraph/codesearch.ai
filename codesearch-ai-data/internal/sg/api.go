@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"sync"
 )
 
 var SOURCEGRAPH_API_TOKEN = os.Getenv("SOURCEGRAPH_API_TOKEN")
@@ -87,11 +88,14 @@ type highlightQueryResponse struct {
 	} `json:"data"`
 }
 
+var highlightCacheMutex sync.Mutex
 var highlightCache = map[string]string{}
 
 func GetHighlightedCodeLineRange(repoName string, commitID string, filePath string, startLine int, endLine int) (string, error) {
 	cacheKey := fmt.Sprintf("%s:%s:%s:%d:%d", repoName, commitID, filePath, startLine, endLine)
+	highlightCacheMutex.Lock()
 	cachedHighlightedCode, ok := highlightCache[cacheKey]
+	highlightCacheMutex.Unlock()
 	if ok {
 		return cachedHighlightedCode, nil
 	}
@@ -106,9 +110,14 @@ func GetHighlightedCodeLineRange(repoName string, commitID string, filePath stri
 	var resp highlightQueryResponse
 	err := requestGraphQL(SOURCEGRAPH_API_TOKEN, HIGHLIGHT_QUERY_GRAPHQL, variables, &resp)
 	if err != nil {
+		return "", err
+	}
+	if len(resp.Data.Repository.Commit.File.Highlight.LineRanges) == 0 {
 		return "", nil
 	}
 	highlightedCode := strings.Join(resp.Data.Repository.Commit.File.Highlight.LineRanges[0], "")
+	highlightCacheMutex.Lock()
 	highlightCache[cacheKey] = highlightedCode
+	highlightCacheMutex.Unlock()
 	return highlightedCode, nil
 }

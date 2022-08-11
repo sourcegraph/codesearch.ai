@@ -1,0 +1,81 @@
+.home-container {
+    display: flex;
+    justify-content: center;
+}
+
+.home {
+    padding: 0 16px;
+    min-width: 300px;
+    max-width: 900px;
+}
+
+.home-logo {
+    margin-top: 64px;
+    cursor: default;
+    margin-bottom: 32px;
+}
+
+.home-search-by {
+    display: flex;
+    margin-bottom: 16px;
+}
+
+.home-search-by-option {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #62738D;
+    padding: 4px 8px;
+    font-size: 14px;
+    margin-right: 8px;
+    border-bottom: 2px solid transparent;
+}
+
+.home-search-by-option-selected {
+    border-bottom: 2px solid rgba(85, 23, 209, 0.4);
+}
+
+.home-container .text-search-input {
+    width: 100%;
+}
+
+.home-code-search-input {
+    display: flex;
+}
+
+.home-code-search-input .code-search-input-root {
+    width: 900px;
+    min-width: 300px;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.home-code-search-input .code-search-input {
+    min-height: 128px;
+}
+
+.text-search-examples {
+    margin-top: 48px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.text-search-examples .query-example-chip {
+    display: inline-block;
+    border-radius: 9999px;
+}
+
+.code-search-examples {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 48px;
+}
+
+.code-search-examples .query-example-chip {
+    white-space: pre-wrap;
+    border-radius: 8px;
+    font-family: 'Azeret Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+}

@@ -2,6 +2,7 @@ package web
 
 import (
 	"codesearch-ai-data/internal/database"
+	"codesearch-ai-data/internal/socode"
 	"context"
 	"fmt"
 	"time"
@@ -12,13 +13,13 @@ import (
 const TIMESTAMP_LAYOUT = "2006-01-02T15:04:05.000"
 
 type SOQuestionWithAnswers struct {
-	ID           int
-	Title        string
-	Tags         string
-	CreationDate string
-	Score        int
-	Answers      []*SOAnswer
-	URL          string
+	ID           int         `json:"id"`
+	Title        string      `json:"title"`
+	Tags         string      `json:"tags"`
+	CreationDate string      `json:"creationDate"`
+	Score        int         `json:"score"`
+	Answers      []*SOAnswer `json:"answers"`
+	URL          string      `json:"url"`
 }
 
 type SOAnswer struct {
@@ -60,14 +61,20 @@ func GetSOQuestionsWithAnswersByID(ctx context.Context, conn *pgx.Conn, ids []in
 			sq.CreationDate = timestamp.Format("Jan 02, 2006")
 		}
 
+		answers := sq.Answers[:0]
 		for _, answer := range sq.Answers {
+			if answer == nil {
+				continue
+			}
 			timestamp, err := time.Parse(TIMESTAMP_LAYOUT, answer.CreationDate)
 			// Ignore if we can't parse the timestamp
 			if err == nil {
 				answer.CreationDate = timestamp.Format("Jan 02, 2006")
 			}
+			answer.Body = socode.EscapeCodeSnippetsInHTML(answer.Body)
+			answers = append(answers, answer)
 		}
-
+		sq.Answers = answers
 		return sq, nil
 	})
 	if err != nil {
