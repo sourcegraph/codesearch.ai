@@ -3,6 +3,7 @@ package functionextractor
 import (
 	ph "codesearch-ai-data/internal/parsinghelpers"
 	sp "codesearch-ai-data/internal/sitterparsers"
+	"context"
 	"errors"
 	"io"
 
@@ -37,16 +38,19 @@ func NewPhpFunctionExtractor(minLines int) FunctionExtractor {
 	return &phpFunctionExtractor{&functionExtractor{sp.GetPhpParser(), minLines}}
 }
 
-func (pfe *phpFunctionExtractor) Extract(code []byte) ([]*ExtractedFunction, error) {
-	tree := pfe.parser.Parse(nil, code)
+func (pfe *phpFunctionExtractor) Extract(ctx context.Context, code []byte) ([]*ExtractedFunction, error) {
+	tree, err := pfe.parser.ParseCtx(ctx, nil, code)
+	if err != nil {
+		return nil, err
+	}
 
 	rootNode := tree.RootNode()
 	if rootNode.HasError() {
-		return nil, errors.New("Error encountered while parsing")
+		return nil, errors.New("error encountered while parsing")
 	}
 	extractedFunctions := []*ExtractedFunction{}
 	iter := sitter.NewNamedIterator(tree.RootNode(), sitter.BFSMode)
-	err := iter.ForEach(func(node *sitter.Node) error {
+	err = iter.ForEach(func(node *sitter.Node) error {
 		nodeType := node.Type()
 
 		if nodeType == "method_declaration" || nodeType == "function_definition" {

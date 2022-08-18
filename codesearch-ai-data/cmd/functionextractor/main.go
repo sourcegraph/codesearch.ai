@@ -19,6 +19,7 @@ func main() {
 
 	repoName := flag.String("repo-name", "", "Name of the repository to process")
 	repoNamesFilePath := flag.String("repo-names-file", "", "Path to the repo names file")
+	repoDirectory := flag.String("repo-directory", "", "Path to the existing repo directory")
 	nWorkers := flag.Int("n-workers", 4, "Number of workers to process the repo names")
 	debug := flag.Bool("debug", false, "Enable debug logging")
 
@@ -30,7 +31,18 @@ func main() {
 
 	ctx := context.Background()
 
-	if repoName != nil && *repoName != "" {
+	if repoName != nil && repoDirectory != nil && *repoName != "" && *repoDirectory != "" {
+		conn, err := database.ConnectToDatabase(ctx)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer conn.Close(ctx)
+
+		err = functionextractor.ProcessRepoPath(ctx, conn, *repoName, *repoDirectory)
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else if repoName != nil && *repoName != "" {
 		conn, err := database.ConnectToDatabase(ctx)
 		if err != nil {
 			log.Fatal(err)

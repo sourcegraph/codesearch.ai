@@ -2,6 +2,7 @@ package parsinghelpers
 
 import (
 	sp "codesearch-ai-data/internal/sitterparsers"
+	"context"
 	"io/ioutil"
 	"strings"
 	"testing"
@@ -50,15 +51,19 @@ func TestStripComments(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			ctx := context.Background()
 			testCode, err := ioutil.ReadFile(tt.path)
 			if err != nil {
 				t.Fatal(err)
 			}
 
-			tree := tt.parser.Parse(nil, testCode)
+			tree, err := tt.parser.ParseCtx(ctx, nil, testCode)
+			if err != nil {
+				t.Fatal(err)
+			}
 			rootNode := tree.RootNode()
 			if rootNode.HasError() {
-				t.Fatal("Error encountered while parsing")
+				t.Fatal("error encountered while parsing")
 			}
 
 			// TODO: Refactor

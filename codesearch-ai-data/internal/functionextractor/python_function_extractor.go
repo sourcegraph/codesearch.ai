@@ -3,6 +3,7 @@ package functionextractor
 import (
 	ph "codesearch-ai-data/internal/parsinghelpers"
 	sp "codesearch-ai-data/internal/sitterparsers"
+	"context"
 	"errors"
 	"io"
 
@@ -17,17 +18,20 @@ func NewPythonFunctionExtractor(minLines int) FunctionExtractor {
 	return &pythonFunctionExtractor{&functionExtractor{sp.GetPythonParser(), minLines}}
 }
 
-func (pfe *pythonFunctionExtractor) Extract(code []byte) ([]*ExtractedFunction, error) {
-	tree := pfe.parser.Parse(nil, code)
+func (pfe *pythonFunctionExtractor) Extract(ctx context.Context, code []byte) ([]*ExtractedFunction, error) {
+	tree, err := pfe.parser.ParseCtx(ctx, nil, code)
+	if err != nil {
+		return nil, err
+	}
 
 	rootNode := tree.RootNode()
 	if rootNode.HasError() {
-		return nil, errors.New("Error encountered while parsing")
+		return nil, errors.New("error encountered while parsing")
 	}
 
 	extractedFunctions := []*ExtractedFunction{}
 	iter := sitter.NewNamedIterator(tree.RootNode(), sitter.BFSMode)
-	err := iter.ForEach(func(node *sitter.Node) error {
+	err = iter.ForEach(func(node *sitter.Node) error {
 		if node.Type() == "function_definition" {
 			docstringNodes, err := ph.GetPythonDocstringNodes(node)
 			if err != nil {

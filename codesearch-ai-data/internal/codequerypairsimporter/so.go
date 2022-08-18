@@ -76,8 +76,11 @@ type SOQuestionWithAnswers struct {
 	Answers []*string
 }
 
-func tryParse(parser *sitter.Parser, code []byte) (*sitter.Node, error) {
-	tree := parser.Parse(nil, code)
+func tryParse(ctx context.Context, parser *sitter.Parser, code []byte) (*sitter.Node, error) {
+	tree, err := parser.ParseCtx(ctx, nil, code)
+	if err != nil {
+		return nil, err
+	}
 	rootNode := tree.RootNode()
 	if rootNode.HasError() {
 		return nil, errors.New("error encountered while parsing")
@@ -120,7 +123,7 @@ func addPHPTagsIfMissing(codeText string) string {
 	return codeText
 }
 
-func getCodeAnswers(answers []*string, languages []string) ([]string, error) {
+func getCodeAnswers(ctx context.Context, answers []*string, languages []string) ([]string, error) {
 	codeAnswers := map[string]struct{}{}
 	codeAnswersDeduplicated := []string{}
 	for _, answer := range answers {
@@ -146,7 +149,7 @@ func getCodeAnswers(answers []*string, languages []string) ([]string, error) {
 
 				code := []byte(codeText)
 				parser := sitterparsers.GetParserForLanguage(language)
-				rootNode, err := tryParse(parser, code)
+				rootNode, err := tryParse(ctx, parser, code)
 				if err != nil {
 					continue
 				}
@@ -196,7 +199,7 @@ func questionToCodeQueryPair(ctx context.Context, conn *pgx.Conn, question *SOQu
 		return nil, nil
 	}
 
-	codeAnswers, err := getCodeAnswers(question.Answers, languages)
+	codeAnswers, err := getCodeAnswers(ctx, question.Answers, languages)
 	if err != nil || len(codeAnswers) == 0 {
 		return nil, err
 	}

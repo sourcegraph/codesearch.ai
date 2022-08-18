@@ -1,6 +1,7 @@
 package functionextractor
 
 import (
+	"context"
 	"io/ioutil"
 	"sort"
 	"testing"
@@ -48,12 +49,13 @@ func TestFunctionExtractors(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			ctx := context.Background()
 			testCode, err := ioutil.ReadFile(tt.path)
 			if err != nil {
 				t.Fatal(err)
 			}
 
-			extractedFunctions, err := tt.extractor.Extract(testCode)
+			extractedFunctions, err := tt.extractor.Extract(ctx, testCode)
 			if err != nil {
 				t.Fatal(err)
 			}

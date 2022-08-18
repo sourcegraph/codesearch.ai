@@ -3,6 +3,7 @@ package functionextractor
 import (
 	ph "codesearch-ai-data/internal/parsinghelpers"
 	sp "codesearch-ai-data/internal/sitterparsers"
+	"context"
 	"errors"
 	"io"
 
@@ -37,17 +38,20 @@ func getInlineFunctionIdentifierAndDocstring(node *sitter.Node, code []byte) (id
 	return
 }
 
-func (jfe *javascriptFunctionExtractor) Extract(code []byte) ([]*ExtractedFunction, error) {
-	tree := jfe.parser.Parse(nil, code)
+func (jfe *javascriptFunctionExtractor) Extract(ctx context.Context, code []byte) ([]*ExtractedFunction, error) {
+	tree, err := jfe.parser.ParseCtx(ctx, nil, code)
+	if err != nil {
+		return nil, err
+	}
 
 	rootNode := tree.RootNode()
 	if rootNode.HasError() {
-		return nil, errors.New("Error encountered while parsing")
+		return nil, errors.New("error encountered while parsing")
 	}
 
 	extractedFunctions := []*ExtractedFunction{}
 	iter := sitter.NewNamedIterator(tree.RootNode(), sitter.BFSMode)
-	err := iter.ForEach(func(node *sitter.Node) error {
+	err = iter.ForEach(func(node *sitter.Node) error {
 		docstring := ""
 		identifier := ""
 
