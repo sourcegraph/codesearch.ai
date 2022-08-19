@@ -45,6 +45,7 @@ CREATE TABLE extracted_functions (
     inline_comments text NOT NULL,
     clean_code text NOT NULL,
     clean_code_hash text NOT NULL UNIQUE,
+	token_counts jsonb NOT NULL,
     identifier text NOT NULL,
     start_line integer NOT NULL,
     end_line integer NOT NULL,
@@ -61,6 +62,7 @@ CREATE TABLE code_query_pairs (
 	code_hash text NOT NULL UNIQUE,
     query text NOT NULL,
     is_train bool NOT NULL DEFAULT false,
+	token_counts jsonb,
     so_question_id integer,
     extracted_function_id integer,
 
