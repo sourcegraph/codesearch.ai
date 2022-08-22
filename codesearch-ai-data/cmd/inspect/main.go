@@ -2,6 +2,7 @@ package main
 
 import (
 	"codesearch-ai-data/internal/database"
+	tc "codesearch-ai-data/internal/tokencounter"
 	"context"
 	"html/template"
 	"net/http"
@@ -162,12 +163,13 @@ func inspectSOQuestionsHandler(ctx context.Context, conn *pgx.Conn) func(http.Re
 }
 
 type StoredCodeQueryPair struct {
-	ID    int
-	Code  string
-	Query string
+	ID          int
+	Code        string
+	Query       string
+	TokenCounts tc.TokenCounter
 }
 
-const inspectCodeQueryPairsQuery = `SELECT id, code, query FROM code_query_pairs`
+const inspectCodeQueryPairsQuery = `SELECT id, code, query, token_counts FROM code_query_pairs`
 
 func inspectCodeQueryPairsHandler(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -178,6 +180,7 @@ func inspectCodeQueryPairsHandler(ctx context.Context, conn *pgx.Conn) func(http
 				&cqp.ID,
 				&cqp.Code,
 				&cqp.Query,
+				&cqp.TokenCounts,
 			)
 			if err != nil {
 				return nil, err

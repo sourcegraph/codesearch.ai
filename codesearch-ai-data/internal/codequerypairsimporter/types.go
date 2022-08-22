@@ -1,22 +1,24 @@
 package codequerypairsimporter
 
 import (
+	tc "codesearch-ai-data/internal/tokencounter"
 	"crypto/sha1"
 	"encoding/hex"
 	"strings"
 	"unicode"
 )
 
-const BATCH_SIZE = 10_000
+const BATCH_SIZE = 5_000
 
 type CodeQueryPair struct {
-	ID                  int    `json:"id"`
-	Code                string `json:"code"`
-	CodeHash            string `json:"-"`
-	Query               string `json:"query"`
-	IsTrain             bool   `json:"-"`
-	SOQuestionID        *int   `json:"soQuestionId"`
-	ExtractedFunctionID *int   `json:"extractedFunctionId"`
+	ID                  int             `json:"id"`
+	Code                string          `json:"code"`
+	CodeHash            string          `json:"-"`
+	Query               string          `json:"query"`
+	IsTrain             bool            `json:"-"`
+	TokenCounts         tc.TokenCounter `json:"tokenCounts"`
+	SOQuestionID        *int            `json:"soQuestionId"`
+	ExtractedFunctionID *int            `json:"extractedFunctionId"`
 }
 
 func getSHA1Hash(text string) string {
@@ -34,12 +36,13 @@ func removeNonAsciiChars(text string) string {
 	}, text)
 }
 
-func newCodeQueryPair(code string, query string, isTrain bool, soQuestionID *int, extractedFunctionID *int) *CodeQueryPair {
+func newCodeQueryPair(code string, query string, isTrain bool, tc tc.TokenCounter, soQuestionID *int, extractedFunctionID *int) *CodeQueryPair {
 	return &CodeQueryPair{
 		Code:                code,
 		CodeHash:            getSHA1Hash(code),
 		Query:               query,
 		IsTrain:             isTrain,
+		TokenCounts:         tc,
 		SOQuestionID:        soQuestionID,
 		ExtractedFunctionID: extractedFunctionID,
 	}

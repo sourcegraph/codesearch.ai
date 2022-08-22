@@ -13,7 +13,7 @@ import (
 	sitter "github.com/smacker/go-tree-sitter"
 )
 
-func tokenCounterToString(tc tokenCounter) string {
+func tokenCounterToString(tc TokenCounter) string {
 	keys := []string{}
 	for k, _ := range tc {
 		keys = append(keys, k)
@@ -81,10 +81,7 @@ func TestTokenCounter(t *testing.T) {
 				t.Fatal("error encountered while parsing")
 			}
 
-			tokenCounter, err := countTokens(rootNode, testCode)
-			if err != nil {
-				t.Fatal(err)
-			}
+			tokenCounter := CountTokens(rootNode, testCode)
 			autogold.Equal(t, tokenCounterToString(tokenCounter))
 		})
 	}

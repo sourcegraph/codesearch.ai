@@ -16,7 +16,7 @@ func newExtractedFunctionsPaginator(conn *pgx.Conn, pageSize int) *database.Pagi
 		Conn:      conn,
 		AfterID:   0,
 		PageSize:  pageSize,
-		BaseQuery: "SELECT extracted_functions.id, docstring, inline_comments, clean_code, identifier, is_train FROM extracted_functions JOIN repos r on r.id = extracted_functions.repo_id",
+		BaseQuery: "SELECT extracted_functions.id, docstring, inline_comments, clean_code, identifier, is_train, token_counts FROM extracted_functions JOIN repos r on r.id = extracted_functions.repo_id",
 		IDColumn:  "extracted_functions.id",
 		ScanRow: func(rows pgx.Rows) (*fe.ExtractedFunction, error) {
 			ef := &fe.ExtractedFunction{}
@@ -27,6 +27,7 @@ func newExtractedFunctionsPaginator(conn *pgx.Conn, pageSize int) *database.Pagi
 				&ef.CleanCode,
 				&ef.Identifier,
 				&ef.IsTrain,
+				&ef.TokenCounts,
 			)
 			if err != nil {
 				return nil, err
@@ -77,6 +78,7 @@ func extractedFunctionToCodeQueryPair(ef *fe.ExtractedFunction) *CodeQueryPair {
 		ef.CleanCode,
 		strings.TrimSpace(docstring),
 		ef.IsTrain,
+		ef.TokenCounts,
 		nil,
 		&ef.ID,
 	)

@@ -62,7 +62,7 @@ CREATE TABLE code_query_pairs (
 	code_hash text NOT NULL UNIQUE,
     query text NOT NULL,
     is_train bool NOT NULL DEFAULT false,
-	token_counts jsonb,
+	token_counts jsonb NOT NULL,
     so_question_id integer,
     extracted_function_id integer,
 

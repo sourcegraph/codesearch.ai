@@ -30,7 +30,7 @@ func insertRepo(ctx context.Context, conn *pgx.Conn, repoName, commitID string) 
 const insertExtractedFunctionsBatchSize = 32
 
 const insertExtractedFunctionsQuery = `
-INSERT INTO extracted_functions (repo_id, path, docstring, inline_comments, clean_code, clean_code_hash, identifier, start_line, end_line)
+INSERT INTO extracted_functions (repo_id, path, docstring, inline_comments, clean_code, clean_code_hash, identifier, start_line, end_line, token_counts)
 VALUES
 	%s
 ON CONFLICT (clean_code_hash)
@@ -75,8 +75,8 @@ func insertExtractedFunctionsFromFile(ctx context.Context, conn *pgx.Conn, repoI
 
 		extractedFunctionsBatch := deduplicatedFunctions[i:end]
 
-		insertValuesParameters, valuesArgs := database.PrepareValuesForBulkInsert(extractedFunctionsBatch, 9, func(valueArgs []any, ef *ExtractedFunction) []any {
-			return append(valueArgs, repoID, filePath, ef.Docstring, ef.InlineComments, ef.CleanCode, ef.CleanCodeHash, ef.Identifier, ef.StartLine, ef.EndLine)
+		insertValuesParameters, valuesArgs := database.PrepareValuesForBulkInsert(extractedFunctionsBatch, 10, func(valueArgs []any, ef *ExtractedFunction) []any {
+			return append(valueArgs, repoID, filePath, ef.Docstring, ef.InlineComments, ef.CleanCode, ef.CleanCodeHash, ef.Identifier, ef.StartLine, ef.EndLine, ef.TokenCounts)
 		})
 
 		_, err := conn.Exec(ctx, fmt.Sprintf(insertExtractedFunctionsQuery, insertValuesParameters), valuesArgs...)

@@ -5,6 +5,7 @@ import (
 	ph "codesearch-ai-data/internal/parsinghelpers"
 	"codesearch-ai-data/internal/sitterparsers"
 	"codesearch-ai-data/internal/socode"
+	tc "codesearch-ai-data/internal/tokencounter"
 	"context"
 	"errors"
 	"math/rand"
@@ -123,9 +124,10 @@ func addPHPTagsIfMissing(codeText string) string {
 	return codeText
 }
 
-func getCodeAnswers(ctx context.Context, answers []*string, languages []string) ([]string, error) {
+func getCodeAnswers(ctx context.Context, answers []*string, languages []string) ([]string, tc.TokenCounter, error) {
 	codeAnswers := map[string]struct{}{}
 	codeAnswersDeduplicated := []string{}
+	tokenCounts := tc.TokenCounter{}
 	for _, answer := range answers {
 		if answer == nil {
 			continue
@@ -175,6 +177,7 @@ func getCodeAnswers(ctx context.Context, answers []*string, languages []string) 
 					_, ok := codeAnswers[prettyFormattedCode]
 					if !ok {
 						codeAnswersDeduplicated = append(codeAnswersDeduplicated, prettyFormattedCode)
+						tokenCounts.Extend(tc.CountTokens(rootNode, code))
 					}
 					codeAnswers[prettyFormattedCode] = struct{}{}
 				}
@@ -184,7 +187,7 @@ func getCodeAnswers(ctx context.Context, answers []*string, languages []string) 
 			}
 		}
 	}
-	return codeAnswersDeduplicated, nil
+	return codeAnswersDeduplicated, tokenCounts, nil
 }
 
 func questionToCodeQueryPair(ctx context.Context, conn *pgx.Conn, question *SOQuestionWithAnswers, isTrain bool) (*CodeQueryPair, error) {
@@ -199,13 +202,13 @@ func questionToCodeQueryPair(ctx context.Context, conn *pgx.Conn, question *SOQu
 		return nil, nil
 	}
 
-	codeAnswers, err := getCodeAnswers(ctx, question.Answers, languages)
+	codeAnswers, tokenCounter, err := getCodeAnswers(ctx, question.Answers, languages)
 	if err != nil || len(codeAnswers) == 0 {
 		return nil, err
 	}
 
 	codeAnswer := strings.Join(codeAnswers, "\n")
-	return newCodeQueryPair(codeAnswer, title, isTrain, &question.ID, nil), nil
+	return newCodeQueryPair(codeAnswer, title, isTrain, tokenCounter, &question.ID, nil), nil
 }
 
 func ImportSOCodeQueryPairs(ctx context.Context, conn *pgx.Conn, trainTestSplitRatio float64) error {

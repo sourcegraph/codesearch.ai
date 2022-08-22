@@ -2,6 +2,7 @@ package functionextractor
 
 import (
 	ph "codesearch-ai-data/internal/parsinghelpers"
+	tc "codesearch-ai-data/internal/tokencounter"
 	"context"
 	"crypto/sha1"
 	"encoding/hex"
@@ -30,7 +31,7 @@ type ExtractedFunction struct {
 	StartLine      int
 	EndLine        int
 	IsTrain        bool
-	TokensCount    map[string]int
+	TokenCounts    tc.TokenCounter
 }
 
 func getSHA1Hash(text string) string {
@@ -45,7 +46,6 @@ func isFunctionRightSize(codeText string, minLines int) bool {
 }
 
 func NewExtractedFunction(identifier string, cleanCode string, inlineComments []string, docstring string, node *sitter.Node, code []byte) *ExtractedFunction {
-	// TODO: Count here
 	return &ExtractedFunction{
 		Identifier:     identifier,
 		Code:           node.Content(code),
@@ -55,6 +55,7 @@ func NewExtractedFunction(identifier string, cleanCode string, inlineComments []
 		Docstring:      ph.GetPrecedingFunctionDocstring(node, code),
 		StartLine:      int(node.StartPoint().Row),
 		EndLine:        int(node.EndPoint().Row),
+		TokenCounts:    tc.CountTokens(node, code),
 	}
 }
 

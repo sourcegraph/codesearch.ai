@@ -23,13 +23,13 @@ func importCodeQueryPairs(ctx context.Context, conn *pgx.Conn, pairs []*CodeQuer
 		codes[pair.CodeHash] = true
 	}
 
-	insertValuesParameters, valuesArgs := database.PrepareValuesForBulkInsert(deduplicatedPairs, 6, func(valueArgs []any, cqp *CodeQueryPair) []any {
-		return append(valueArgs, cqp.Code, cqp.CodeHash, cqp.Query, cqp.IsTrain, cqp.SOQuestionID, cqp.ExtractedFunctionID)
+	insertValuesParameters, valuesArgs := database.PrepareValuesForBulkInsert(deduplicatedPairs, 7, func(valueArgs []any, cqp *CodeQueryPair) []any {
+		return append(valueArgs, cqp.Code, cqp.CodeHash, cqp.Query, cqp.IsTrain, cqp.TokenCounts, cqp.SOQuestionID, cqp.ExtractedFunctionID)
 	})
 
 	_, err := conn.Exec(
 		ctx,
-		fmt.Sprintf("INSERT INTO code_query_pairs (code, code_hash, query, is_train, so_question_id, extracted_function_id) VALUES %s ON CONFLICT (code_hash) DO NOTHING", insertValuesParameters),
+		fmt.Sprintf("INSERT INTO code_query_pairs (code, code_hash, query, is_train, token_counts, so_question_id, extracted_function_id) VALUES %s ON CONFLICT (code_hash) DO NOTHING", insertValuesParameters),
 		valuesArgs...,
 	)
 	return err

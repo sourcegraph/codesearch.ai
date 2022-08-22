@@ -31,6 +31,11 @@
     <div class="pair">
         <div class="query">{{ .Query }}</div>
         <pre class="code"><code>{{ .Code }}</code></pre>
+        <div class="tokens">
+            {{ range $token, $count := .TokenCounts }}
+            <div>[{{ $token }}]: {{ $count }}</div>
+            {{ end }}
+        </div>
     </div>
     {{ end }}
 </body>
