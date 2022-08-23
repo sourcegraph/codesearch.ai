@@ -1,8 +1,8 @@
 package main
 
 import (
-	cqpi "codesearch-ai-data/internal/codequerypairsimporter"
 	"codesearch-ai-data/internal/database"
+	tc "codesearch-ai-data/internal/tokencounter"
 	"context"
 	"encoding/json"
 	"flag"
@@ -19,6 +19,38 @@ type codeQueryPairsOptions struct {
 	IsTrain                *bool
 	SOOnly                 bool
 	ExtractedFunctionsOnly bool
+}
+
+type codeQueryPair struct {
+	ID                  int             `json:"id"`
+	Code                string          `json:"code"`
+	CodeHash            string          `json:"-"`
+	Query               string          `json:"query"`
+	IsTrain             bool            `json:"-"`
+	TokenCounts         tc.TokenCounter `json:"-"`
+	SOQuestionID        *int            `json:"soQuestionId"`
+	ExtractedFunctionID *int            `json:"extractedFunctionId"`
+}
+
+func (cqp codeQueryPair) MarshalJSON() ([]byte, error) {
+	type alias codeQueryPair
+
+	tokens := make([]string, 0, len(cqp.TokenCounts))
+	counts := make([]int, 0, len(cqp.TokenCounts))
+	for token, count := range cqp.TokenCounts {
+		tokens = append(tokens, token)
+		counts = append(counts, count)
+	}
+
+	return json.Marshal(&struct {
+		Tokens []string `json:"tokens"`
+		Counts []int    `json:"counts"`
+		*alias
+	}{
+		Tokens: tokens,
+		Counts: counts,
+		alias:  (*alias)(&cqp),
+	})
 }
 
 func (o *codeQueryPairsOptions) Condition() string {
@@ -42,20 +74,21 @@ func (o *codeQueryPairsOptions) Condition() string {
 	return strings.Join(conds, " AND ")
 }
 
-func newCodeQueryPairsPaginator(conn *pgx.Conn, pageSize int, options *codeQueryPairsOptions) *database.Paginator[cqpi.CodeQueryPair] {
-	return &database.Paginator[cqpi.CodeQueryPair]{
+func newCodeQueryPairsPaginator(conn *pgx.Conn, pageSize int, options *codeQueryPairsOptions) *database.Paginator[codeQueryPair] {
+	return &database.Paginator[codeQueryPair]{
 		Conn:          conn,
 		AfterID:       0,
 		PageSize:      pageSize,
-		BaseQuery:     "SELECT id, code, query, so_question_id, extracted_function_id FROM code_query_pairs",
+		BaseQuery:     "SELECT id, code, query, token_counts, so_question_id, extracted_function_id FROM code_query_pairs",
 		BaseCondition: options.Condition(),
 		IDColumn:      "id",
-		ScanRow: func(rows pgx.Rows) (*cqpi.CodeQueryPair, error) {
-			cqp := &cqpi.CodeQueryPair{}
+		ScanRow: func(rows pgx.Rows) (*codeQueryPair, error) {
+			cqp := &codeQueryPair{}
 			err := rows.Scan(
 				&cqp.ID,
 				&cqp.Code,
 				&cqp.Query,
+				&cqp.TokenCounts,
 				&cqp.SOQuestionID,
 				&cqp.ExtractedFunctionID,
 			)
@@ -64,7 +97,7 @@ func newCodeQueryPairsPaginator(conn *pgx.Conn, pageSize int, options *codeQuery
 			}
 			return cqp, nil
 		},
-		GetRowID: func(row *cqpi.CodeQueryPair) int { return row.ID },
+		GetRowID: func(row *codeQueryPair) int { return row.ID },
 	}
 }
 
