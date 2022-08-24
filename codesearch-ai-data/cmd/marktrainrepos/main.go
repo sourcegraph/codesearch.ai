@@ -18,29 +18,6 @@ type extractedFunctionsPerRepoCount struct {
 	Count  int
 }
 
-func newExtractedFunctionsPerRepoCountPaginator(conn *pgx.Conn, pageSize int) *database.Paginator[extractedFunctionsPerRepoCount] {
-	return &database.Paginator[extractedFunctionsPerRepoCount]{
-		Conn:          conn,
-		AfterID:       0,
-		PageSize:      pageSize,
-		BaseQuery:     "SELECT repo_id, COUNT(*) FROM extracted_functions",
-		GroupByColumn: "repo_id",
-		IDColumn:      "repo_id",
-		ScanRow: func(rows pgx.Rows) (*extractedFunctionsPerRepoCount, error) {
-			efc := &extractedFunctionsPerRepoCount{}
-			err := rows.Scan(
-				&efc.RepoID,
-				&efc.Count,
-			)
-			if err != nil {
-				return nil, err
-			}
-			return efc, nil
-		},
-		GetRowID: func(row *extractedFunctionsPerRepoCount) int { return row.RepoID },
-	}
-}
-
 func markTrainRepos(ctx context.Context, conn *pgx.Conn, repos []*extractedFunctionsPerRepoCount) error {
 	length := len(repos)
 	batchSize := 1024
@@ -68,7 +45,7 @@ func markTrainRepos(ctx context.Context, conn *pgx.Conn, repos []*extractedFunct
 func main() {
 	rand.Seed(0)
 
-	trainTestRatio := flag.Float64("train-test-ratio", 0.95, "Train test ratio")
+	trainTestRatio := flag.Float64("train-test-ratio", 0.99, "Train test ratio")
 
 	flag.Parse()
 
@@ -79,14 +56,23 @@ func main() {
 	}
 	defer conn.Close(ctx)
 
-	efcs := []*extractedFunctionsPerRepoCount{}
-	paginator := newExtractedFunctionsPerRepoCountPaginator(conn, 1024)
-	page := paginator.Next(ctx)
-	for len(page) > 0 {
-		efcs = append(efcs, page...)
-		page = paginator.Next(ctx)
+	rows, err := conn.Query(ctx, "SELECT repo_id, COUNT(*) FROM extracted_functions GROUP BY repo_id")
+	if err != nil {
+		log.Fatal(err)
 	}
-	err = paginator.Error()
+	defer rows.Close()
+
+	efcs, err := database.ScanRows(ctx, rows, func(rows pgx.Rows) (*extractedFunctionsPerRepoCount, error) {
+		efc := &extractedFunctionsPerRepoCount{}
+		err := rows.Scan(
+			&efc.RepoID,
+			&efc.Count,
+		)
+		if err != nil {
+			return nil, err
+		}
+		return efc, nil
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
