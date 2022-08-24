@@ -5,12 +5,21 @@ import random
 
 import numpy as np
 from scipy.special import softmax
-from datasets import load_dataset
+from datasets import load_dataset, disable_caching
 
 from codesearch_ai_ml.data_loader import stream_jsonl_file
 
 N_RANDOMLY_SAMPLED_QUERIES = 2
 MAX_CANDIDATE_TOKEN_SAMPLES = 10
+
+columns_to_remove = [
+    "id",
+    "code",
+    "tokens",
+    "counts",
+    "soQuestionId",
+    "extractedFunctionId",
+]
 
 
 def tokens_to_and_query(tokens):
@@ -81,6 +90,7 @@ def prepare_dataset(
         ),
         num_proc=num_proc,
     )
+    processed_dataset = processed_dataset.remove_columns(columns_to_remove)
     processed_dataset.save_to_disk(output_dir)
 
 
@@ -117,6 +127,8 @@ def prepare_datasets(
 
 
 if __name__ == "__main__":
+    disable_caching()
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--train-file", dest="train_file")
     parser.add_argument("--test-file", dest="test_file")
