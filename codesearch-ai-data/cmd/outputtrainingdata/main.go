@@ -17,6 +17,7 @@ import (
 
 type codeQueryPairsOptions struct {
 	IsTrain                *bool
+	NonEmptyQueriesOnly    bool
 	SOOnly                 bool
 	ExtractedFunctionsOnly bool
 }
@@ -66,6 +67,9 @@ func (o *codeQueryPairsOptions) Condition() string {
 		conds = append(conds, "so_question_id is not null")
 	} else if o.ExtractedFunctionsOnly {
 		conds = append(conds, "extracted_function_id is not null")
+	}
+	if o.NonEmptyQueriesOnly {
+		conds = append(conds, "query != ''")
 	}
 
 	if len(conds) == 0 {
@@ -142,6 +146,7 @@ func main() {
 	outputTest := flag.Bool("test", false, "Output test")
 	outputSO := flag.Bool("so", false, "Output SO questions")
 	outputExtractedFunctions := flag.Bool("extracted-functions", false, "Output extracted functions")
+	nonEmptyQueries := flag.Bool("non-empty-queries", false, "Non empty queries only")
 	outputDirectory := flag.String("output-directory", "/tmp", "Output directory for the training files")
 
 	flag.Parse()
@@ -157,7 +162,7 @@ func main() {
 	f := false
 	if *outputTrain {
 		log.Info("Outputting train.jsonl file")
-		err = outputCodeQueryPairsToFile(ctx, conn, &codeQueryPairsOptions{IsTrain: &t}, path.Join(*outputDirectory, "train.jsonl"))
+		err = outputCodeQueryPairsToFile(ctx, conn, &codeQueryPairsOptions{IsTrain: &t, NonEmptyQueriesOnly: *nonEmptyQueries}, path.Join(*outputDirectory, "train.jsonl"))
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -165,7 +170,7 @@ func main() {
 
 	if *outputTest {
 		log.Info("Outputting test.jsonl file")
-		err = outputCodeQueryPairsToFile(ctx, conn, &codeQueryPairsOptions{IsTrain: &f}, path.Join(*outputDirectory, "test.jsonl"))
+		err = outputCodeQueryPairsToFile(ctx, conn, &codeQueryPairsOptions{IsTrain: &f, NonEmptyQueriesOnly: *nonEmptyQueries}, path.Join(*outputDirectory, "test.jsonl"))
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -173,19 +178,19 @@ func main() {
 
 	if *outputSO {
 		log.Info("Outputting so.jsonl file")
-		err = outputCodeQueryPairsToFile(ctx, conn, &codeQueryPairsOptions{SOOnly: true}, path.Join(*outputDirectory, "so.train.jsonl"))
+		err = outputCodeQueryPairsToFile(ctx, conn, &codeQueryPairsOptions{SOOnly: true, NonEmptyQueriesOnly: *nonEmptyQueries}, path.Join(*outputDirectory, "so.train.jsonl"))
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		log.Info("Outputting so.train.jsonl file")
-		err = outputCodeQueryPairsToFile(ctx, conn, &codeQueryPairsOptions{SOOnly: true, IsTrain: &t}, path.Join(*outputDirectory, "so.train.jsonl"))
+		err = outputCodeQueryPairsToFile(ctx, conn, &codeQueryPairsOptions{SOOnly: true, IsTrain: &t, NonEmptyQueriesOnly: *nonEmptyQueries}, path.Join(*outputDirectory, "so.train.jsonl"))
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		log.Info("Outputting so.test.jsonl file")
-		err = outputCodeQueryPairsToFile(ctx, conn, &codeQueryPairsOptions{SOOnly: true, IsTrain: &f}, path.Join(*outputDirectory, "so.test.jsonl"))
+		err = outputCodeQueryPairsToFile(ctx, conn, &codeQueryPairsOptions{SOOnly: true, IsTrain: &f, NonEmptyQueriesOnly: *nonEmptyQueries}, path.Join(*outputDirectory, "so.test.jsonl"))
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -193,19 +198,19 @@ func main() {
 
 	if *outputExtractedFunctions {
 		log.Info("Outputting extracted-functions.jsonl file")
-		err = outputCodeQueryPairsToFile(ctx, conn, &codeQueryPairsOptions{ExtractedFunctionsOnly: true}, path.Join(*outputDirectory, "extracted-functions.jsonl"))
+		err = outputCodeQueryPairsToFile(ctx, conn, &codeQueryPairsOptions{ExtractedFunctionsOnly: true, NonEmptyQueriesOnly: *nonEmptyQueries}, path.Join(*outputDirectory, "extracted-functions.jsonl"))
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		log.Info("Outputting extracted-functions.train.jsonl file")
-		err = outputCodeQueryPairsToFile(ctx, conn, &codeQueryPairsOptions{ExtractedFunctionsOnly: true, IsTrain: &t}, path.Join(*outputDirectory, "extracted-functions.train.jsonl"))
+		err = outputCodeQueryPairsToFile(ctx, conn, &codeQueryPairsOptions{ExtractedFunctionsOnly: true, IsTrain: &t, NonEmptyQueriesOnly: *nonEmptyQueries}, path.Join(*outputDirectory, "extracted-functions.train.jsonl"))
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		log.Info("Outputting extracted-functions.test.jsonl file")
-		err = outputCodeQueryPairsToFile(ctx, conn, &codeQueryPairsOptions{ExtractedFunctionsOnly: true, IsTrain: &f}, path.Join(*outputDirectory, "extracted-functions.test.jsonl"))
+		err = outputCodeQueryPairsToFile(ctx, conn, &codeQueryPairsOptions{ExtractedFunctionsOnly: true, IsTrain: &f, NonEmptyQueriesOnly: *nonEmptyQueries}, path.Join(*outputDirectory, "extracted-functions.test.jsonl"))
 		if err != nil {
 			log.Fatal(err)
 		}
